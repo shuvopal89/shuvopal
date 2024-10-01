@@ -24,13 +24,15 @@ function Home() {
     return (
         <div className='w-full bg-gray-900'>
             <Header scroll={scroll} />
-            <div className='max-w-[1000px] m-auto'>
-                <IntroSection />
-                <div className={commonStyle}></div>
-                <TechnicalSkills />
-                <About />
-                <ProjectSection />
-                <Contact />
+            <div className='px-4'>
+                <div className='max-w-[1000px] m-auto'>
+                    <IntroSection />
+                    <div className={commonStyle}></div>
+                    <TechnicalSkills />
+                    <About />
+                    <ProjectSection />
+                    <Contact />
+                </div>
             </div>
             <Footer />
         </div>
