@@ -29,23 +29,34 @@ function Contact() {
     const sendMessage = async () => {
         setIsLoading(true);
         try {
-            const data = await fetch(`${API_URL}/getMessage`, {
+            fetch(`${API_URL}/getMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(user),
-            });
-            const response = await data.json();
-            if (response.error) {
-                setError(response.error);
-                setSuccess("");
-            };
-            if (response.msg) {
-                setSuccess(response.msg);
-                setError("");
-            };
-            setIsLoading(false);
+            }).then(async (res) => {
+                const response = await res.json();
+                if (response.error) {
+                    setError(response.error);
+                    setSuccess("");
+                };
+                if (response.msg) {
+                    setSuccess(response.msg);
+                    setError("");
+                    setUser({
+                        firstname: "",
+                        lastname: "",
+                        email: "",
+                        phone: "",
+                        message: ""
+                    })
+                };
+                setIsLoading(false);
+            }).catch((err) => {
+                console.log(err);
+                setIsLoading(false);
+            })
         } catch (err) {
             setIsLoading(false);
         }
@@ -77,7 +88,12 @@ function Contact() {
                         <label htmlFor="Message" className={commonStyle2}>Message</label><br />
                         <textarea onChange={handleInput} className={`${commonStyle1} resize-none h-52`} name="message" id="Message" value={user.message} placeholder='Leave a message.....'></textarea>
                     </div>
-                    <button type='submit' onClick={sendMessage} className='mt-2 col-span-2 bg-lime-200 py-3 rounded-lg text-gray-950 text-sm font-semibold active:scale-95 transition-all'>{isLoading ? 'Sending.....' : 'Message'}</button>
+                    <div className='relative active:scale-95 transition-all w-full col-span-2 bg-gray-400 mt-2 rounded-xl'>
+                        <button type='submit' onClick={sendMessage} className='bg-lime-200 h-11 rounded-lg text-gray-950 text-sm font-semibold w-full'>{isLoading ? 'Sending.....' : 'Message'}</button>
+                        {
+                            isLoading && <div className='w-full h-11 bg-gray-900/50 rounded-md absolute top-0'></div>
+                        }
+                    </div>
                     {error && <p className='w-full col-span-2 mt-5 bg-red-500/10 py-4 font-medium border-2 text-center border-red-400 text-[13px] text-red-400 rounded-lg'>{error}</p>}
                     {success && <p className='w-full col-span-2 mt-5 bg-green-500/10 font-medium py-4 border-2 text-center border-green-400 text-[13px] text-green-400 rounded-lg'>{success}</p>}
                 </div>
