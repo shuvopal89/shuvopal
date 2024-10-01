@@ -1,4 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+
+const API_URL =
+    import.meta.env.MODE === 'development'
+        ? `${import.meta.env.VITE_DEV_API_URL}`
+        : `${import.meta.env.VITE_PROD_API_URL}`
 
 function Contact() {
     const [user, setUser] = useState({
@@ -24,7 +29,7 @@ function Contact() {
     const sendMessage = async () => {
         setIsLoading(true);
         try {
-            const data = await fetch('https://shuvopal-server.vercel.app/getMessage', {
+            const data = await fetch(`${API_URL}/getMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
